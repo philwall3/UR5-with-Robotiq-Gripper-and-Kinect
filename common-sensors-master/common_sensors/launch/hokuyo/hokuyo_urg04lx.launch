@@ -1,0 +1,40 @@
+<launch>
+
+	<arg name="link_name" default="laser_link" />
+	<arg name="laser_link_name" default="laser_scan_link" />
+	<arg name="publish_tf" default="true" />
+	<arg name="device" default="/dev/ttyACM0" />
+
+	<arg name="intensity" default="false"/>
+	
+	<arg name="scan_topic" default="scan"/>
+
+
+	<!-- construct the link from the base of the hokuyo to the laser -->
+	<group if="$(arg publish_tf)">
+		<node name="$(arg link_name)_link_broadcaster" pkg="tf" type="static_transform_publisher"
+			args="0 0 0.058 0 0 0 $(arg link_name) $(arg laser_link_name) 100" />
+
+	</group>
+
+
+	<!-- run the hokuyo driver with the laser link as the frame id -->
+	<node name="$(arg link_name)_node" pkg="hokuyo_node" type="hokuyo_node">
+		<param name="port" value="$(arg device)" />
+		<param name="frame_id" value="$(arg laser_link_name)" />
+		
+		<param unless="$(arg intensity)" name="min_ang" value="-2.09" /> 
+		<param unless="$(arg intensity)" name="max_ang" value="2.09" />
+		<param if="$(arg intensity)" name="min_ang" value="-1.047" /> 
+		<param if="$(arg intensity)" name="max_ang" value="1.047" />
+		<param name="intensity" value="$(arg intensity)" />
+		<param name="cluster" value="1" />
+		<param name="skip" value="1" />
+		<param name="min_range" value="0.02" />
+		<param name="max_range" value="4.0" />
+	
+		<remap from="scan" to="$(arg scan_topic)"/>
+
+	</node>
+
+</launch>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="myrobot2" >
+
+	<xacro:arg name="limited" default="true"/>
+
+	<!-- THE ROBOT -->
+	<link name="world" />
+
+	<!-- UR from ROS-i repos -->
+	<xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
+	<joint name="world_joint" type="fixed">
+		<parent link="world" />
+		<child link = "simple_arm_base_link" />
+		<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+	</joint>
+	<xacro:ur5_robot prefix="simple_arm_" joint_limited="true"/>
+	
+
+	<!-- Robotiq from Beta Robots fork-->
+	<xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper.urdf.xacro" />
+	<xacro:robotiq_85_gripper prefix="simple_gripper_" parent="simple_arm_tool0">
+		<origin xyz="0 0 0" rpy="${pi/2} -${pi/2} 0" />
+	</xacro:robotiq_85_gripper>
+
+
+	<!--Kinect-->
+	<!-- position of kinect has to be changed in common_sensors/urdf/sensors/kinect_properties.urdf.xacro-->	
+	<xacro:include filename="$(find common_sensors)/urdf/sensors/kinect.urdf.xacro" />
+	<xacro:sensor_kinect parent="world"/>
+
+
+
+	<gazebo>
+	  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">	   
+	  </plugin>
+	</gazebo>
+
+ 
+</robot>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!--rosparam command="load" file="$(find myrobot_moveit_config)/config/joint_names.yaml"/-->
+
+  <!--include file="$(find myrobot2_moveit_config)/launch/planning_context.launch" >
+    <arg name="load_robot_description" value="true" />
+  </include-->
+
+  <!-- wird aktuell benötigt; evtl wo anders hin verschieben? -->
+  <!-- (We do not have a robot connected, so publish fake joint states) -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="/use_gui" value="true"/> <!--default: false-->
+    <rosparam param="/source_list">[/joint_states,/simple_gripper/joint_states]</rosparam>
+    <!--rosparam param="/source_list">[/simple_gripper/joint_states]</rosparam--> <!--Arm position in rviz springt hiermit-->
+  </node>
+
+  <include file="$(find myrobot2_moveit_config)/launch/move_group.launch">
+    <arg name="publish_monitored_planning_scene" value="true" />
+    <arg name="debug" default="true" /> <!-- ergänzt, damit debug aktiviert wird-->
+  </include>
+
+  <include file="$(find myrobot2_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" value="true"/>
+  </include>
+
+</launch>

@@ -1,0 +1,3 @@
+<launch>
+    <rosparam command="load" file="$(find myrobot2_moveit_config)/config/sensors.yaml" />
+</launch>

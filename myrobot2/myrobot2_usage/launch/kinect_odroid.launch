@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- run kinect driver on remote machine with same ROS master-->
+<launch>
+
+  <group>
+    <!--ATTENTION: user and password have to be filled in!!!!!-->	
+    <machine name="odroid" address="IP-ADDRESS" user="USER" password="PASSWORD" env-loader="PATH" default="true"/> <!--default="true" is needed to work properly-->
+
+    <include file="$(find freenect_launch)/launch/freenect.launch"/> 
+      <arg name="publish_tf" value="false" />
+  </group>
+
+</launch>

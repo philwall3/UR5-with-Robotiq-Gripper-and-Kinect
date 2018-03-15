@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+<!--    <include>
+      <uri>model://kinect_ros</uri>
+      <pose>0.5 -0.5 0 0 0 1.570795</pose>
+    </include> -->
+
+
+  </world>
+</sdf>

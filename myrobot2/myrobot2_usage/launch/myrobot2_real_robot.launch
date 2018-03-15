@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!-- note: controllers.yaml in moveit_config has to be setup for specific controller -->
+<!--runs the real robot setup on the local machine-->
+<launch>
+  <arg name="robot_ip" default="192.168.20.77"/>
+  <arg name="limited" default="true"/>
+  <arg name="min_payload"  default="0.0"/>
+  <arg name="max_payload"  default="3.0"/>
+  <arg name="prefix" default="simple_arm_" />  
+  <arg name="max_velocity" default="10.0"/> <!-- [rad/s] -->
+  <arg name="base_frame" default="$(arg prefix)base" />
+  <arg name="tool_frame" default="$(arg prefix)tool0_controller" />
+
+
+  <include file="$(find myrobot2_driver)/launch/myrobot2_bringup_ros_control.launch">
+    <arg name="limited" default="$(arg limited)"/>
+    <arg name="min_payload"  default="$(arg min_payload)"/>
+    <arg name="max_payload"  default="$(arg max_payload)"/>
+    <arg name="prefix" default="$(arg prefix)" />  
+    <arg name="max_velocity" default="$(arg max_velocity)"/> <!-- [rad/s] -->
+    <arg name="base_frame" default="$(arg base_frame)" />
+    <arg name="tool_frame" default="$(arg tool_frame)" />
+  </include>
+
+  <!-- MoveIt! Setup with RViz-->
+  <include file="$(find myrobot2_moveit_config)/launch/myrobot2_moveit_planning_execution.launch"/>
+  <param name="move_group/trajectory_execution/allowed_start_tolerance" value="0.5" />
+
+
+</launch>

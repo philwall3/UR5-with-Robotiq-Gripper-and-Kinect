@@ -1,0 +1,108 @@
+<?xml version="1.0" ?>
+<robot name="xtion_stand" xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:include filename="$(find common_sensors)/urdf/sensors/xtion.urdf.xacro"/>
+
+	<xacro:macro name="xtion_standoff" params="parent number x_loc y_loc z_loc height">
+		<joint name="standoff_${number}_joint" type="fixed">
+			<origin xyz="${x_loc} ${y_loc} ${z_loc}" rpy="0 0 0" />
+			<parent link="${parent}"/>
+			<child link="standoff_${number}_link" />
+		</joint>
+
+		<link name="standoff_${number}_link">
+			<inertial>
+				<mass value="0.001" />
+				<origin xyz="0 0 0" />
+				<inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+					iyy="0.0001" iyz="0.0"
+					izz="0.0001" />
+			</inertial>
+			<visual>
+				<origin xyz=" 0 0 0 " rpy="0 0 0" />
+				<geometry>
+					<cylinder length="${height}" radius="0.011113"/>
+				</geometry>
+			</visual>
+
+			<collision>
+				<origin xyz="0.0 0.0 0.1016" rpy="0 0 0" />
+				<geometry>
+					<cylinder length="${height}" radius="0.011113"/>
+				</geometry>
+			</collision>
+		</link>
+	</xacro:macro>
+
+	<xacro:macro name="connect_plate" params="parent x_loc y_loc z_loc">
+		<joint name="connect_plate_joint" type="fixed">
+			<origin xyz="${x_loc} ${y_loc} ${z_loc}" rpy="0 0 0" />
+			<parent link="${parent}" />
+			<child link="connect_plate_link" />
+		</joint>
+		<link name="connect_plate_link">
+			<inertial>
+				<mass value="0.01" />
+				<origin xyz="0 0 0" />
+				<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<box size="0.066 0.28 0.005"/>
+				</geometry>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<box size="0.066 0.28 0.005"/>
+				</geometry>
+			</collision>
+		</link>
+	</xacro:macro>
+
+	<xacro:macro name="xtion_plate" params="parent x_loc y_loc z_loc angle">
+		<joint name="xtion_plate_joint" type="fixed">
+            <origin xyz="${x_loc} ${y_loc} ${z_loc}" rpy="0 ${angle} 0" />
+			<parent link="${parent}" />
+			<child link="xtion_plate_link" />
+		</joint>
+		<link name="xtion_plate_link">
+			<inertial>
+				<mass value="0.01" />
+				<origin xyz="0 0 0" />
+				<inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<box size="0.04 0.245 0.005"/>
+				</geometry>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<box size="0.04 0.245 0.005"/>
+				</geometry>
+			</collision>
+		</link>
+	</xacro:macro>
+
+	<xacro:property name="cyl_height" value="0.203" /> 
+	<xacro:property name="plate_thickness" value="0.006" /> 
+	<xacro:property name="xtion_mount_z" value="0.035" /> 
+	<!--xacro:property name="tilting_angle" value="-0.7853" /--> 
+	<xacro:macro name="xtion_stand" params="parent tilting_angle">
+		<xacro:xtion_standoff number="1" parent="${parent}" x_loc="0" y_loc="-0.1" z_loc="${cyl_height/2}" height="${cyl_height}"/>
+		<xacro:xtion_standoff number="2" parent="${parent}" x_loc="0" y_loc="0.1" z_loc="${cyl_height/2}" height="${cyl_height}"/>
+		<xacro:xtion_standoff number="3" parent="${parent}" x_loc="0.055" y_loc="-0.13" z_loc="${cyl_height/2}" height="${cyl_height}"/>
+		<xacro:xtion_standoff number="4" parent="${parent}" x_loc="0.055" y_loc="0.13" z_loc="${cyl_height/2}" height="${cyl_height}"/>
+		<xacro:connect_plate parent="${parent}" x_loc="0.033" y_loc="0" z_loc="${cyl_height+plate_thickness/2}"/>
+		<xacro:xtion_standoff number="5" parent="${parent}" x_loc="0" y_loc="-0.1" z_loc="${cyl_height*1.5+plate_thickness}" height="${cyl_height}"/>
+		<xacro:xtion_standoff number="6" parent="${parent}" x_loc="0" y_loc="0.1" z_loc="${cyl_height*1.5+plate_thickness}" height="${cyl_height}"/>
+        <xacro:xtion_plate parent="standoff_6_link" x_loc="0" y_loc="-0.1" z_loc="${cyl_height/2+xtion_mount_z}" angle="${tilting_angle}"/>
+
+		<xacro:sensor_xtion parent="xtion_plate_link" camera_name="xtion">
+			<origin xyz="0 0 ${xtion_height/2+plate_thickness/2}" rpy="0 0 3.14159" />
+		</xacro:sensor_xtion>
+	</xacro:macro>
+</robot>

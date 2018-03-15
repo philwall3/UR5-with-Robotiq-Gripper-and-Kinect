@@ -1,0 +1,43 @@
+#arm_controller:
+#  type: position_controllers/JointTrajectoryController
+#  joints:
+#     - shoulder_pan_joint
+#     - shoulder_lift_joint
+#     - elbow_joint
+#     - wrist_1_joint
+#     - wrist_2_joint
+#     - wrist_3_joint
+#  constraints:
+#      goal_time: 0.6
+#      stopped_velocity_tolerance: 0.05
+#      shoulder_pan_joint: {trajectory: 0.1, goal: 0.1}
+#      shoulder_lift_joint: {trajectory: 0.1, goal: 0.1}
+#      elbow_joint: {trajectory: 0.1, goal: 0.1}
+#      wrist_1_joint: {trajectory: 0.1, goal: 0.1}
+#      wrist_2_joint: {trajectory: 0.1, goal: 0.1}
+#      wrist_3_joint: {trajectory: 0.1, goal: 0.1}
+#  stop_trajectory_duration: 0.5
+#  state_publish_rate:  25
+#  action_monitor_rate: 10
+
+arm_controller:
+  type: position_controllers/JointTrajectoryController
+  joints:
+     - simple_arm_shoulder_pan_joint
+     - simple_arm_shoulder_lift_joint
+     - simple_arm_elbow_joint
+     - simple_arm_wrist_1_joint
+     - simple_arm_wrist_2_joint
+     - simple_arm_wrist_3_joint
+  constraints:
+      goal_time: 0.6
+      stopped_velocity_tolerance: 0.05
+      simple_arm_shoulder_pan_joint: {trajectory: 0.1, goal: 0.1}
+      simple_arm_shoulder_lift_joint: {trajectory: 0.1, goal: 0.1}
+      simple_arm_elbow_joint: {trajectory: 0.1, goal: 0.1}
+      simple_arm_wrist_1_joint: {trajectory: 0.1, goal: 0.1}
+      simple_arm_wrist_2_joint: {trajectory: 0.1, goal: 0.1}
+      simple_arm_wrist_3_joint: {trajectory: 0.1, goal: 0.1}
+  stop_trajectory_duration: 0.5
+  state_publish_rate:  25
+  action_monitor_rate: 10

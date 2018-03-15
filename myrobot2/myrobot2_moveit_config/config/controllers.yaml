@@ -1,0 +1,42 @@
+controller_list:
+#-------------for gazebo UR5-------------------------------
+#  - name: "arm_controller"
+#    action_ns: follow_joint_trajectory
+#    type: FollowJointTrajectory
+#    joints:
+#      - simple_arm_shoulder_pan_joint
+#      - simple_arm_shoulder_lift_joint
+#      - simple_arm_elbow_joint
+#      - simple_arm_wrist_1_joint
+#      - simple_arm_wrist_2_joint
+#      - simple_arm_wrist_3_joint
+
+#-------------for gazebo gripper---------------------------
+#  - name: "gripper"
+#    action_ns: follow_joint_trajectory
+#    type: FollowJointTrajectory
+#    default: true
+#    joints:
+#      - simple_gripper_robotiq_85_left_knuckle_joint
+
+#-------------for real gripper-----------------------------
+  - name: /simple_gripper/joint_position_controller #/simple_gripper/joint_position_controller
+    action_ns: gripper_cmd #follow_joint_trajectory #Robotiq2FCommand #gripper_action #gripper_cmd
+    type: GripperCommand #FollowJointTrajectory #Robotiq2FActionController #GripperCommand
+    default: true
+    joints:
+      - simple_gripper_robotiq_85_left_knuckle_joint
+
+#-------------for real UR5---------------------------------
+
+  - name: vel_based_pos_traj_controller #or pos_based_pos_traj_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    joints:
+      - simple_arm_shoulder_pan_joint
+      - simple_arm_shoulder_lift_joint
+      - simple_arm_elbow_joint
+      - simple_arm_wrist_1_joint
+      - simple_arm_wrist_2_joint
+      - simple_arm_wrist_3_joint
+

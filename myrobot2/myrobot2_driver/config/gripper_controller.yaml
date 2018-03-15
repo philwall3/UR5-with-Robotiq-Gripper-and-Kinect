@@ -1,0 +1,51 @@
+hardware_control_loop:
+   loop_hz: 125
+
+## Settings for ros_control hardware interface
+hardware_interface:
+   joints:
+     - simple_gripper_robotiq_85_left_knuckle_joint
+
+#simple_gripper:
+joint_state_controller:
+   type: joint_state_controller/JointStateController
+   publish_rate: 125  #100
+
+joint_position_controller:
+   type: position_controllers/GripperActionController #positition_controllers/GripperActionController #position_controllers/Robotiq2FActionController
+   joint: simple_gripper_robotiq_85_left_knuckle_joint
+   constraints:
+      goal_time: 0.6
+      stopped_velocity_tolerance: 0.05
+      simple_gripper_robotiq_85_left_knuckle_joint: {trajectory: 0.1, goal: 0.01}
+   stop_trajectory_duration: 0.5
+   state_publish_rate:  125
+   action_monitor_rate: 10
+
+joint_trajectory_controller:
+   type: position_controllers/JointTrajectoryController
+   joint:
+     - simple_gripper_robotiq_85_left_knuckle_joint
+#   constraints:
+#      goal_time: 0.6
+#      stopped_velocity_tolerance: 0.05
+#      simple_gripper_robotiq_85_left_knuckle_joint: {trajectory: 0.1, goal: 0.1}
+#   stop_trajectory_duration: 0.5
+#   state_publish_rate:  125
+#   action_monitor_rate: 10
+
+
+
+#--------------------------------------------------------------
+
+#simple_gripper:
+#  type: position_controllers/JointTrajectoryController
+#  joints:
+#     - simple_gripper_robotiq_85_left_knuckle_joint
+#  constraints:
+#      goal_time: 0.6
+#      stopped_velocity_tolerance: 0.05
+#      simple_gripper_robotiq_85_left_knuckle_joint: {trajectory: 0.1, goal: 0.1}
+#  stop_trajectory_duration: 0.5
+#  state_publish_rate:  25
+#  action_monitor_rate: 10

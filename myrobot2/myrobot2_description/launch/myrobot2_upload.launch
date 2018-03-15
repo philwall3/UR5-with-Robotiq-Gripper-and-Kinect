@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="limited" default="true"/>
+  <!--upload robot description to parameter server-->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find myrobot2_description)/urdf/myrobot2_macro.xacro' limited:=$(arg limited)" />
+</launch>

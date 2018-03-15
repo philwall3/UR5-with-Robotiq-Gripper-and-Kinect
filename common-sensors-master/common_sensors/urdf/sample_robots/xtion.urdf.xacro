@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot name="sensor_asus_xtion_pro" xmlns:xacro="http://ros.org/wiki/xacro">
+    <link name="world">
+        <static>true</static>
+    </link>
+    
+    <link name="xtion_base">
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" /> 
+			<geometry>
+				<box size="0.02 0.02 0.02"/>
+			</geometry>
+			<material name="orange"/>
+		</visual>
+	</link>
+
+    <joint name="toxtion_base" type="fixed">
+		<origin xyz="0 -0.89 -0.01" rpy="0 0 -1.57079632679" /> 
+		<parent link="world" />
+		<child link="xtion_base" />
+	</joint>
+
+	<xacro:include filename="$(find common_sensors)/urdf/sensors/xtion_xtended_stand.urdf.xacro" /> 
+	<xacro:xtion_stand parent="xtion_base" tilting_angle="-0.2"/>
+</robot>

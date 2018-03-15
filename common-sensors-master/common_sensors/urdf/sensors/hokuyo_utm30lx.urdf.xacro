@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="hokuyo_utm30lx" params="name parent *origin ros_topic update_rate ray_count min_angle max_angle">
+	<joint name="${name}_joint" type="fixed">
+		<xacro:insert_block name="origin" />
+		<parent link="${parent}"/>
+		<child link="${name}_frame"/>
+	</joint>
+
+	<link name="${name}_frame">
+		<inertial>
+			<mass value="0.270" />
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<inertia ixx="2.632e-4" ixy="0" ixz="0" iyy="2.632e-4" iyz="0" izz="1.62e-4" />
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0.0115" rpy="0 0 0" />
+			<geometry>
+			<mesh filename="package://common_sensors/meshes/sensors/hokuyo_utm_30lx.stl"/>
+		</geometry>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+			<box size="0.058 0.058 0.087" />
+			<!--<mesh filename="package://common_sensors/meshes/hokuyo_utm30lx/hokuyo_utm_30lx.stl"/>-->
+		</geometry>
+		</collision>
+	</link>
+
+	<joint name="${name}_scan_joint" type="fixed" >
+		<origin xyz="0 0 ${0.055-0.087/2}" rpy="0 0 0" />
+		<parent link="${name}_frame" />
+		<child link="${name}_scan_link"/>
+	</joint>
+
+	<link name="${name}_scan_link" type="laser">
+		<inertial>
+			<mass value="0.01"/>
+			<origin xyz="0 0 0.0"/>
+			<inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+		</inertial>
+<!--		<visual>
+			<origin rpy="0 1.5707 0" xyz="0 0 0"/>
+			<geometry>
+				<cylinder radius="0.01" length="0.128"/>
+			</geometry>
+		</visual>
+-->
+	</link>
+ 
+	<gazebo reference="${name}_scan_link">
+		<sensor type="ray" name="${name}">
+			<always_on>true</always_on>
+			<update_rate>${update_rate}</update_rate>
+			<pose>0 0 0 0 0 0</pose>
+			<visualize>false</visualize>
+			<ray>
+			<scan>
+				<horizontal>
+				<samples>${ray_count}</samples>
+				<resolution>1</resolution>
+				<min_angle>${min_angle}</min_angle>
+				<max_angle>${max_angle}</max_angle>
+				</horizontal>
+			</scan>
+			<range>
+				<min>0.08</min>
+				<max>30.0</max>
+				<resolution>0.01</resolution>
+			</range>
+			</ray>
+			<plugin name="gazebo_ros_${name}_controller" filename="libgazebo_ros_laser.so">
+				<gaussianNoise>0.005</gaussianNoise>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>${update_rate}</updateRate>
+				<topicName>${ros_topic}</topicName>
+				<frameName>${name}_scan_link</frameName>
+			</plugin>
+		</sensor>
+	</gazebo>
+		
+	</xacro:macro>
+</robot>
+	

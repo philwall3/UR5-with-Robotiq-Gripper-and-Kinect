@@ -1,0 +1,16 @@
+<class_libraries>
+	<library path="lib/libsensor_filters">
+		<class name="sensor_filter/FootprintFilter" type="sensor_filter::FootprintFilter" base_class_type="filters::FilterBase<sensor_msgs::LaserScan>">
+			<description>
+				This is a filter that removes points in a certain footprint. Useful for removing known laserscan hits on the body of the robot.
+			</description>
+		</class>
+		<class name="sensor_filter/NanToInfFilter" type="sensor_filter::NanToInfFilter" base_class_type="filters::FilterBase<sensor_msgs::LaserScan>">
+			<description>
+				This is a filter that converts nan points to +infinity, effectively making the assumption that locations where no readings are returned are free space.
+			</description>
+		</class>
+	</library>
+</class_libraries>
+
+

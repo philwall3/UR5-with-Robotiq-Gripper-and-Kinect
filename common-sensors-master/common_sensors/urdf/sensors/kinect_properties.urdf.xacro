@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<root xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- 
+	  Translation and rotation of camera from its base link
+   -->
+	<xacro:property name="cam_px" value="1.0" />
+	<xacro:property name="cam_py" value="0.03" />
+	<xacro:property name="cam_pz" value="0.6" />
+	<xacro:property name="cam_or" value="0" />
+	<xacro:property name="cam_op" value="0.3" />
+	<xacro:property name="cam_oy" value="${M_PI}" />
+</root>

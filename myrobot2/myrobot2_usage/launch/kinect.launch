@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!--run kinect driver on local machine-->
+<launch>
+  <include file="$(find freenect_launch)/launch/freenect.launch" >
+      <arg name="publish_tf" value="false" />
+  </include>
+</launch>

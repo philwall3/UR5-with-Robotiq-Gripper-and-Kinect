@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<robot name="sensor_asus_xtion_pro" xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:include filename="$(find common_sensors)/urdf/sensors/xtion_gazebo.urdf.xacro"/>
+	
+	<!-- Xacro properties -->
+	<xacro:property name="M_PI" value="3.1415926535897931" /> 
+	<xacro:property name="M_SCALE" value="0.001"/>
+	<xacro:property name="xtion_depth_frame_py" value="0.0499" /> <!-- previously -0.022 --> 
+	<xacro:property name="xtion_rgb_frame_py" value="0.022" /> 
+	<xacro:property name="xtion_camera_link_py" value="0" />
+
+	<!-- 
+	To use from files including this one. This is just a constant which contains the height of the xtion.
+        -->
+	<xacro:property name="xtion_height" value="0.026" />
+
+	<xacro:macro name="sensor_xtion" params="parent camera_name *origin">
+
+		<joint name="${camera_name}_base_joint" type="fixed">
+			<xacro:insert_block name="origin" />
+			<parent link="${parent}"/>
+			<child link="${camera_name}_base_frame" />
+		</joint>
+		<link name="${camera_name}_base_frame">
+			<inertial>
+			<mass value="0.001" />
+			<origin xyz="0 0 0" />
+			<inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+				iyy="0.0001" iyz="0.0"
+				izz="0.0001" />
+			</inertial>
+		</link>
+
+
+		<joint name="${camera_name}_rgb_joint" type="fixed">
+			<origin xyz="0 ${xtion_rgb_frame_py} 0" rpy="0 0 0" />
+			<parent link="${camera_name}_base_frame"/>
+			<child link="${camera_name}_rgb_frame" />
+		</joint>
+
+		<link name="${camera_name}_rgb_frame">
+			<inertial>
+			<mass value="0.001" />
+			<origin xyz="0 0 0" />
+			<inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+				iyy="0.0001" iyz="0.0"
+				izz="0.0001" />
+			</inertial>
+		</link>
+
+		<joint name="${camera_name}_rgb_optical_joint" type="fixed">
+			<origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
+			<parent link="${camera_name}_rgb_frame" />
+			<child link="${camera_name}_rgb_optical_frame" />
+		</joint>
+
+		<link name="${camera_name}_rgb_optical_frame">
+			<inertial>
+			<mass value="0.001" />
+			<origin xyz="0 0 0" />
+			<inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+				iyy="0.0001" iyz="0.0"
+				izz="0.0001" />
+			</inertial>
+		</link>
+
+		<joint name="${camera_name}_joint" type="fixed">
+			<origin xyz="0 ${xtion_camera_link_py} 0" 
+					rpy="0 0 0"/>
+			<parent link="${camera_name}_base_frame"/>
+			<child link="${camera_name}_link"/>
+		</joint>
+		<link name="${camera_name}_link">
+			<visual>
+				<origin xyz="0.01 0 0" rpy="${-M_PI/2} -${M_PI} ${-M_PI/2}"/>
+				<geometry>
+					<mesh filename="package://common_sensors/meshes/sensors/asus_xtion_pro_live.dae" scale="${M_SCALE} ${M_SCALE} ${M_SCALE}"/>
+				</geometry>
+			</visual>
+			<collision>
+				<origin xyz="0.01 0 0" rpy="${-M_PI/2} -${M_PI} ${-M_PI/2}"/>
+				<geometry>
+					<box size="0.15 0.05 0.07"/>
+				</geometry>
+			</collision>
+			<inertial>
+			<mass value="0.01" />
+			<origin xyz="0 0 0" />
+			<inertia ixx="0.001" ixy="0.0" ixz="0.0"
+				iyy="0.001" iyz="0.0"
+				izz="0.001" />
+			</inertial>
+		</link>
+
+		<joint name="${camera_name}_depth_joint" type="fixed">
+			<origin xyz="0 ${xtion_depth_frame_py} 0" rpy="0 0 0" />
+			<parent link="${camera_name}_base_frame" />
+			<child link="${camera_name}_depth_frame" />
+		</joint>
+
+		<link name="${camera_name}_depth_frame">
+		<!--        <visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+				<box size="0.15 0.005 0.005"/>
+				</geometry>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+				<box size="0.005 0.005 0.005"/>
+				</geometry>
+			</collision>
+	-->
+			<inertial>
+			<mass value="0.01" />
+			<origin xyz="0 0 0" />
+			<inertia ixx="0.001" ixy="0.0" ixz="0.0"
+				iyy="0.001" iyz="0.0"
+				izz="0.001" />
+			</inertial>
+		</link>
+
+		<joint name="${camera_name}_depth_optical_joint" type="fixed">
+			<origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
+			<parent link="${camera_name}_depth_frame" />
+			<child link="${camera_name}_depth_optical_frame" />
+		</joint>
+
+		<link name="${camera_name}_depth_optical_frame">
+			<inertial>
+			<mass value="0.001" />
+			<origin xyz="0 0 0" />
+			<inertia ixx="0.0001" ixy="0.0" ixz="0.0"
+				iyy="0.0001" iyz="0.0"
+				izz="0.0001" />
+			</inertial>
+		</link>
+
+		<!-- RGBD sensor for simulation, same as Kinect -->
+		<xacro:xtion_sim_3dsensor camera_name="${camera_name}"/>
+
+	</xacro:macro>
+</robot>

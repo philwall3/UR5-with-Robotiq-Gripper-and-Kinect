@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="limited" default="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find myrobot2_gazebo)/worlds/myrobot2.world"/>
+    <!--arg name="paused" value="false"/-->    
+    <!-- more default parameters can be changed here -->
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+  <!-- Convert an xacro and put on parameter server -->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find myrobot2_description)/urdf/myrobot2_macro.xacro' " />
+
+  <!-- Spawn a robot into Gazebo -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model myrobot2 -z 0.1" respawn="false" output="screen" />
+
+
+  <!--ros_control stuff for UR5 and robotiq-->
+  <include file="$(find myrobot2_gazebo)/launch/controller_utils.launch"/>
+
+  <rosparam file="$(find myrobot2_gazebo)/config/gripper_controller_robotiq.yaml" command="load"/> 
+  <node name="gripper_controller_spawner" pkg="controller_manager" type="spawner" args="gripper --shutdown-timeout 0.5" />
+
+  <rosparam file="$(find myrobot2_gazebo)/config/arm_controller_ur5.yaml" command="load"/>
+  <node name="arm_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller" respawn="false" output="screen"/>
+
+</launch>

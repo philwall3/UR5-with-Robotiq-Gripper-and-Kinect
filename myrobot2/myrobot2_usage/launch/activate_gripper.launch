@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- to control/activate the gripper on the local machine -->
+<!-- first do a 'reset' then 'activate' to activate the gripper-->
+<launch>
+
+  <node name="CModelRtuNode" pkg="robotiq_c_model_control" type="CModelRtuNode.py"  args="/dev/ttyUSB0" output="screen">
+  </node>
+
+  <node name="CModelSimpleController" pkg="robotiq_c_model_control" type="CModelSimpleController.py" output="screen">
+  </node>
+
+</launch>

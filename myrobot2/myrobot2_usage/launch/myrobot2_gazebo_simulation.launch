@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- note: controllers.yaml in moveit_config has to be setup for specific controller -->
+<!--starts the gazebo simulation-->
+<launch>
+  <arg name="limited" default="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <include file="$(find myrobot2_gazebo)/launch/myrobot2.launch">
+    <arg name="limited" default="$(arg limited)"/>
+    <arg name="paused" default="$(arg paused)"/>
+    <arg name="use_sim_time" default="$(arg use_sim_time)"/>
+    <arg name="gui" default="$(arg gui)"/>
+    <arg name="headless" default="$(arg headless)"/>
+    <arg name="debug" default="$(arg debug)"/>
+  </include>
+
+  <include file="$(find myrobot2_moveit_config)/launch/myrobot2_moveit_planning_execution.launch"/>
+
+</launch>
