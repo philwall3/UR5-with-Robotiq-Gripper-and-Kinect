@@ -1,10 +1,17 @@
 # UR5-with-Robotiq-Gripper-and-Kinect
 This package enables an UR5 arm with a Robotiq 85 Gripper to be used with ros_control and MoveIt!. A Microsoft Kinect is used to create an Octomap.
+
 It contains code from those repositories:
+
 https://github.com/JenniferBuehler/common-sensors
+
 https://github.com/beta-robots/robotiq
+
 https://github.com/waypointrobotics/robotiq_85_gripper/
+
 https://github.com/ThomasTimm/ur_modern_driver/
+
+https://github.com/ros-industrial/universal_robot
 
 # __Simulation__
 
