@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package>
+  <name>robotiq_2f_hardware</name>
+  <version>0.0.0</version>
+  <description>The robotiq_2f_hardware package</description>
+
+  <maintainer email="carlos@beta-robots.com">Carlos J. Rosales Gallegos</maintainer>
+
+  <license>GPLv3</license>
+
+  <url type="website">https://github.com/ros-industrial/robotiq</url>
+  <url type="bugtracker">https://github.com/ros-industrial/robotiq</url>
+  <url type="repository">https://github.com/ros-industrial/robotiq</url>
+
+
+  <author email="carlos@beta-robots.com">Carlos J. Rosales Gallegos</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>hardware_interface</build_depend>
+  <build_depend>joint_limits_interface</build_depend>
+  <build_depend>transmission_interface</build_depend>
+  <build_depend>urdf</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <run_depend>hardware_interface</run_depend>
+  <run_depend>joint_limits_interface</run_depend>
+  <run_depend>transmission_interface</run_depend>
+  <run_depend>urdf</run_depend>
+  <run_depend>std_msgs</run_depend>
+
+  <export>
+  </export>
+</package>

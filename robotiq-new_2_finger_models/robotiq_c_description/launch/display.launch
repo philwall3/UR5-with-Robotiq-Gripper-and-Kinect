@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+	<param name="robot_description" command="$(find xacro)/xacro.py $(find robotiq_c_description)/robot/simple_c85.urdf.xacro"/>
+
+ 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+		<param name="use_gui" value="true"/>
+	</node>
+
+	<param name="publish_frequency" value="100"/>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<node name="rviz" pkg="rviz" type="rviz" respawn="true" args="-d $(find robotiq_c_description)/launch/config.rviz" output="screen"/>
+
+</launch>

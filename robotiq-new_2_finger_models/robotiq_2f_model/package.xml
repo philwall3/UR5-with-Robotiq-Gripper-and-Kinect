@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <name>robotiq_2f_model</name>
+  <version>0.0.0</version>
+  <description>This package contains the model packages for the 2-finger models of robotiq, namely c85 (small) and c140 (large)</description>
+
+  <maintainer email="carlos@beta-robots.com">Carlos J. Rosales Gallegos</maintainer>
+
+  <license>GPLv3</license>
+
+  <url type="website">http://robotiq.com/products/adaptive-robot-gripper/</url>
+  <url type="developers">http://www.beta-robots.com/</url>
+
+  <author email="carlos@beta-robots.com">Carlos J. Rosales Gallegos</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

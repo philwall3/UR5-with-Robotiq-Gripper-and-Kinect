@@ -1,0 +1,71 @@
+<!-- Launch file for Segway platform startup -->
+
+<launch>
+    <arg name="dual_gripper" default="false"/>
+    <arg name="comport" default="/dev/ttyUSB0"/>
+    <arg name="baud" default="115200"/>
+    <arg name="run_test" default="false"/>
+	        
+    <!-- Robotiq 85 ROS Driver -->
+    <node pkg="robotiq_85_driver" type="robotiq_85_driver" name="robotiq_85_driver" respawn="true" output="screen">
+        <param name="num_grippers" value="1" unless="$(arg dual_gripper)"/>
+        <param name="num_grippers" value="2" if="$(arg dual_gripper)"/>
+        <param name="comport" value="$(arg comport)" />
+        <param name="baud" value="$(arg baud)" />
+    </node>
+
+    <!-- Gripper specific robot state publisher and parameters -->
+    <group unless="$(arg dual_gripper)">
+        <group ns="/gripper">
+            <param name="robot_description" command="$(find xacro)/xacro.py $(find robotiq_85_description)/urdf/robotiq_85_gripper.xacro" />
+        
+            <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+                <param name="robot_description" value="robot_description"/>
+                <param name="publish_frequency" type="double" value="100.0" />
+                <param name="tf_prefix" value="/gripper"/>
+            </node>
+
+            <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+                <rosparam param="source_list">[/gripper/joint_states]</rosparam>
+            </node>
+        </group>
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robotiq_85_bringup)/rviz/robotiq_85.rviz" />
+    </group>
+    
+    <group if="$(arg dual_gripper)">
+        <group ns="/left_gripper">
+            <param name="robot_description" command="$(find xacro)/xacro.py $(find robotiq_85_description)/urdf/robotiq_85_gripper.xacro" />
+        
+            <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+                <param name="robot_description" value="robot_description"/>
+                <param name="publish_frequency" type="double" value="100.0" />
+                <param name="tf_prefix" value="/left_gripper"/>
+            </node>
+
+            <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+                <rosparam param="source_list">[/left_gripper/joint_state]</rosparam>
+            </node>
+        </group>
+
+        <group ns="/right_gripper">
+            <param name="robot_description" command="$(find xacro)/xacro.py $(find robotiq_85_description)/urdf/robotiq_85_gripper.xacro" />
+        
+            <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+                <param name="robot_description" value="robot_description"/>
+                <param name="publish_frequency" type="double" value="100.0" />
+                <param name="tf_prefix" value="/right_gripper"/>
+            </node>
+
+            <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+                <rosparam param="source_list">[/right_gripper/joint_state]</rosparam>
+            </node>
+        </group>
+    </group>
+    
+    <!-- Robotiq 85 ROS Test -->
+    <node pkg="robotiq_85_driver" type="robotiq_85_test" name="robotiq_85_test" output="screen" if="$(arg run_test)">
+        <param name="num_grippers" value="1" unless="$(arg dual_gripper)"/>
+        <param name="num_grippers" value="2" if="$(arg dual_gripper)"/>
+    </node>
+
+</launch>

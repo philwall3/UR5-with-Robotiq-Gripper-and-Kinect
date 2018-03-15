@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+
+	<param name="robot_description" command="$(find xacro)/xacro --inorder $(find robotiq_2f_robot)/robot/simple_rq2f85.urdf.xacro"/>
+
+ 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+		<param name="use_gui" value="false"/>
+		<rosparam param="source_list">[/simple_gripper/joint_states]</rosparam>
+	</node>
+
+	<param name="publish_frequency" value="100"/>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<node name="rviz" pkg="rviz" type="rviz" respawn="true" args="-d $(find robotiq_2f_robot)/launch/config.rviz" output="screen"/>
+
+	<rosparam file="$(find robotiq_2f_robot)/config/controllers.yaml" command="load"/>
+
+	<node ns="simple_gripper" name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller joint_trajectory_controller"/>
+
+	<node ns="simple_gripper" name="simple_gripper_hw" pkg="robotiq_2f_hw_usb" type="robotiq_2f_hw_usb_node" respawn="false" output="screen"/>
+
+</launch>

@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<robot name="example" xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<xacro:include filename="$(find robotiq_2f_model)/model/robotiq_2f_85.urdf.xacro" />
+
+	<link name="world"/>
+
+	<xacro:robotiq_2f_85 name="simple_gripper" parent="world" precise_collision="false" adaptive_transmission="false">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+	</xacro:robotiq_2f_85>
+
+</robot>

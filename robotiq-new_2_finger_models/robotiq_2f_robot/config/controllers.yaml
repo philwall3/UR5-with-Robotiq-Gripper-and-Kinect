@@ -1,0 +1,14 @@
+simple_gripper:
+
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 100  
+
+  joint_position_controller:
+    type: position_controllers/GripperActionController
+    joint: simple_gripper_right_driver_joint
+
+  joint_trajectory_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - simple_gripper_right_driver_joint

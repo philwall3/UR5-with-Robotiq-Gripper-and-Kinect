@@ -1,0 +1,4 @@
+controller_list:
+  - name: fake_gripper_controller
+    joints:
+      - robotiq_85_left_knuckle_joint
